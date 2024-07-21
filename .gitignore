@@ -1,0 +1,13 @@
+# Ignore all
+/*
+
+# Source dir
+!/src
+
+# Github files
+!.gitignore
+!*.md
+
+# CMake files
+!CMakeLists.txt
+!CMakePresets.json

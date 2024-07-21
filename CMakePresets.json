@@ -1,0 +1,33 @@
+{
+    "version": 8,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 20,
+      "patch": 0
+    },
+    "configurePresets": [
+      {
+        "name": "ninja-multi",
+        "displayName": "Ninja Multi-Config",
+        "description": "Build using Ninja Multi-Config generator",
+        "generator": "Ninja Multi-Config",
+        "binaryDir": "${sourceDir}/build/${presetName}"
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "ninja-debug",
+        "description": "Build with Ninja Multi-Config (Debug)",
+        "displayName": "Build (Debug)",
+        "configurePreset": "ninja-multi",
+        "configuration": "Debug"
+      },
+      {
+        "name": "ninja-release",
+        "description": "Build with Ninja Multi-Config (Release)",
+        "displayName": "Build (Release)",
+        "configurePreset": "ninja-multi",
+        "configuration": "Release"
+      }
+    ]
+  }
