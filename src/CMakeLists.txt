@@ -1,5 +1,9 @@
 set(SOURCE_FILES
     main.cpp
+
+    gui/mainwindow.cpp
+    gui/mainwindow.h
+    gui/forms/mainwindow.ui
     )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
