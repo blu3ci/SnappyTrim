@@ -14,9 +14,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget* parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void importMedia();
+
 private:
-    Ui::MainWindow* m_Ui;
+    Ui::MainWindow *m_Ui;
+    QString m_ImportedFilePath;
+
+    void toggleTrimWidgets();
 };

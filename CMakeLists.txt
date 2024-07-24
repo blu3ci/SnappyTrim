@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(snappytrim VERSION 0.1.0 LANGUAGES CXX DESCRIPTION "Quick and lightweight video trimming application")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(MAJOR_QT_VERSION 6)
@@ -15,13 +15,14 @@ else()
     message("No specified Qt Directory. Using default CMAKE_PREFIX_PATH config.")
 endif()
 
-find_package(
-    Qt${MAJOR_QT_VERSION} 
+find_package(Qt${MAJOR_QT_VERSION} 
     REQUIRED COMPONENTS
     Core
     Gui
     Widgets
-    )
+    Multimedia
+    MultimediaWidgets
+)
 
 if (Qt${MAJOR_QT_VERSION}_FOUND)
     message("Qt was found")
