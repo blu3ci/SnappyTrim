@@ -72,8 +72,8 @@ void MainWindow::toggleTrimWidgets()
 
 void MainWindow::resetTimestamps()
 {
-    m_Ui->startTimeLabel->setText("00:00 / 00:00");
-    m_Ui->endTimeLabel->setText("00:00 / 00:00");
+    m_Ui->startTimeLabel->setText("00:00");
+    m_Ui->endTimeLabel->setText("00:00");
 
     m_StartTimestamp = -1;
     m_EndTimestamp = -1;

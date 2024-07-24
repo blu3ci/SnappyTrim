@@ -130,7 +130,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>00:00 / 00:00</string>
+               <string>00:00</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -192,7 +192,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>00:00 / 00:00</string>
+               <string>00:00</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
