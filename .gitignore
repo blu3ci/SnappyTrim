@@ -4,10 +4,15 @@
 # Source dir
 !/src
 
+# Lib dir
+!/lib
+
 # Github files
 !.gitignore
+!.gitmodules
 !*.md
 
 # CMake files
+!/cmake
 !CMakeLists.txt
 !CMakePresets.json

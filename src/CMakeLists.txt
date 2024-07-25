@@ -1,6 +1,9 @@
 set(LIBRARY_TARGET "${PROJECT_NAME}-lib")
 
 set(SOURCE_FILES
+    core/videotrimmer.cpp
+    core/videotrimmer.h
+
     gui/mainwindow.cpp
     gui/mainwindow.h
     gui/forms/mainwindow.ui
@@ -18,6 +21,10 @@ target_link_libraries(${LIBRARY_TARGET} PUBLIC
     Qt${MAJOR_QT_VERSION}::Widgets
     Qt${MAJOR_QT_VERSION}::Multimedia
     Qt${MAJOR_QT_VERSION}::MultimediaWidgets
+
+    FFmpeg::avcodec
+    FFmpeg::avformat
+    FFmpeg::avutil
 )
 
 add_executable(${PROJECT_NAME}
