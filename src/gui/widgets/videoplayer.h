@@ -19,7 +19,7 @@ public:
     static QString toTimestampFormat(qint64 timeMs);
 
     void setMedia(const QUrl &source);
-    const QMediaPlayer &getPlayer() const;
+    const QMediaPlayer *getPlayer() const;
 
 private slots:
     void setProgressBarDuration(qint64 duration);

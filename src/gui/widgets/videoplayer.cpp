@@ -55,9 +55,9 @@ void VideoPlayer::setMedia(const QUrl &source)
     toggleControlsFrame();
 }
 
-const QMediaPlayer &VideoPlayer::getPlayer() const
+const QMediaPlayer *VideoPlayer::getPlayer() const
 {
-    return *m_MediaPlayer;
+    return m_MediaPlayer;
 }
 
 void VideoPlayer::setProgressBarDuration(qint64 position)
@@ -111,8 +111,7 @@ void VideoPlayer::configureMediaControls()
                 {
                     m_MediaPlayer->pause();
                     m_SystemPaused = true;
-                }
-            });
+                } });
 
     connect(m_VideoProgressBar, &QSlider::sliderReleased, this, &VideoPlayer::setPlayerPosition);
 

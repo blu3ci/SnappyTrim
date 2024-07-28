@@ -21,12 +21,14 @@ private slots:
     void importMedia();
     void setStartTimestamp();
     void setEndTimestamp();
+    void saveTrimmedVideo();
 
 private:
     Ui::MainWindow *m_Ui;
     QString m_ImportedFilePath;
     qint64 m_StartTimestamp = -1;
     qint64 m_EndTimestamp = -1;
+    QString m_FileFilter = "Media Files (*.mp4 *.mov *.webm)";
 
     void toggleTrimWidgets();
     void resetTimestamps();

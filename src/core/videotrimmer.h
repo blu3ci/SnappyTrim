@@ -8,11 +8,4 @@ extern "C"
 #include <libavutil/timestamp.h>
 }
 
-class VideoTrimmer
-{
-public:
-    VideoTrimmer();
-
-    void openFile();
-    void saveFile(QString location);
-};
+bool trimVideo(const QString &inputPath, const QString &outputPath, double startMs, double endMs);
