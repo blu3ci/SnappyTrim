@@ -32,4 +32,5 @@ private:
 
     void toggleTrimWidgets();
     void resetTimestamps();
+    void calculateTrimLength();
 };

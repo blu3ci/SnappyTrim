@@ -1,3 +1,4 @@
+#include "mainwindow.h"
 #include <QFileDialog>
 #include <QPushButton>
 #include <QMessageBox>
@@ -18,9 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_Ui->setEndTimeButton, &QPushButton::clicked, this, &MainWindow::setEndTimestamp);
     connect(m_Ui->trimButton, &QPushButton::clicked, this, &MainWindow::saveTrimmedVideo);
     connect(m_Ui->mediaWidget->getPlayer(), &QMediaPlayer::durationChanged, this, [this](qint64 duration)
-            {
-        m_Ui->endTimeLabel->setText(m_Ui->mediaWidget->toTimestampFormat(duration));
-        m_EndTimestamp = duration; });
+		{
+            m_Ui->endTimeLabel->setText(m_Ui->mediaWidget->toTimestampFormat(duration));
+            m_EndTimestamp = duration; 
+            calculateTrimLength();
+		});
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +58,8 @@ void MainWindow::setStartTimestamp()
 
     m_StartTimestamp = startTimestamp;
     m_Ui->startTimeLabel->setText(m_Ui->mediaWidget->toTimestampFormat(startTimestamp));
+
+    calculateTrimLength();
 }
 
 void MainWindow::setEndTimestamp()
@@ -69,6 +74,8 @@ void MainWindow::setEndTimestamp()
 
     m_Ui->endTimeLabel->setText(m_Ui->mediaWidget->toTimestampFormat(endTimestamp));
     m_EndTimestamp = endTimestamp;
+
+    calculateTrimLength();
 }
 
 void MainWindow::saveTrimmedVideo()
@@ -98,4 +105,20 @@ void MainWindow::resetTimestamps()
 
     m_StartTimestamp = -1;
     m_EndTimestamp = -1;
+
+    calculateTrimLength();
+}
+
+void MainWindow::calculateTrimLength()
+{
+    static QString defaultText = m_Ui->trimButton->text();
+
+    if (m_StartTimestamp == -1 && m_EndTimestamp == -1)
+    {
+        m_Ui->trimButton->setText(defaultText);
+        return;
+    }
+
+    QString lenTimestamp = m_Ui->mediaWidget->toTimestampFormat(m_EndTimestamp - m_StartTimestamp);
+    m_Ui->trimButton->setText(defaultText + " (" + lenTimestamp + ")");
 }
