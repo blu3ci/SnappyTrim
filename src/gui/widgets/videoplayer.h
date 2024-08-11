@@ -21,6 +21,14 @@ public:
     void setMedia(const QUrl &source);
     const QMediaPlayer *getPlayer() const;
 
+public slots:
+    void pausePlayer();
+    void resumePlayer();
+    void playOrPausePlayer();
+    void seekPlayer(qint64 position);
+    void movePlayerOneFrameForward();
+    void movePlayerOneFrameBackward();
+
 private slots:
     void setProgressBarDuration(qint64 duration);
     void setProgressBarPosition(qint64 position);

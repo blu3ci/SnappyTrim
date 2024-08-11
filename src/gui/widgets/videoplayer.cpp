@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QTime>
 #include <QLabel>
+#include <QMediaMetaData>
 
 #include "videoplayer.h"
 
@@ -58,6 +59,56 @@ void VideoPlayer::setMedia(const QUrl &source)
 const QMediaPlayer *VideoPlayer::getPlayer() const
 {
     return m_MediaPlayer;
+}
+
+void VideoPlayer::pausePlayer()
+{
+    if (m_MediaPlayer->isPlaying())
+        m_MediaPlayer->pause();
+}
+
+void VideoPlayer::resumePlayer()
+{
+    if (!m_MediaPlayer->isPlaying())
+        m_MediaPlayer->play();
+}
+
+void VideoPlayer::playOrPausePlayer()
+{
+    if (m_MediaPlayer->isPlaying())
+    {
+        pausePlayer();
+    }
+    else
+    {
+        resumePlayer();
+    }
+}
+
+void VideoPlayer::seekPlayer(qint64 position)
+{
+    qint64 absolutePos = m_MediaPlayer->position() + position;
+
+    if (absolutePos >= m_MediaPlayer->duration())
+    {
+        m_MediaPlayer->setPosition(m_MediaPlayer->duration());
+    }
+    else
+    {
+        m_MediaPlayer->setPosition(absolutePos);
+    }
+}
+
+void VideoPlayer::movePlayerOneFrameForward()
+{
+    if (!m_MediaPlayer->isPlaying())
+        seekPlayer(m_MediaPlayer->metaData()[QMediaMetaData::VideoFrameRate].toInt());
+}
+
+void VideoPlayer::movePlayerOneFrameBackward()
+{
+    if (!m_MediaPlayer->isPlaying())
+        seekPlayer(-m_MediaPlayer->metaData()[QMediaMetaData::VideoFrameRate].toInt());
 }
 
 void VideoPlayer::setProgressBarDuration(qint64 position)
@@ -123,8 +174,8 @@ void VideoPlayer::configureMediaControls()
     buttonLayout->addWidget(playButton);
     buttonLayout->addWidget(pauseButton);
 
-    connect(playButton, &QPushButton::clicked, m_MediaPlayer, &QMediaPlayer::play);
-    connect(pauseButton, &QPushButton::clicked, m_MediaPlayer, &QMediaPlayer::pause);
+    connect(playButton, &QPushButton::clicked, this, &VideoPlayer::resumePlayer);
+    connect(pauseButton, &QPushButton::clicked, this, &VideoPlayer::pausePlayer);
 }
 
 void VideoPlayer::toggleControlsFrame()

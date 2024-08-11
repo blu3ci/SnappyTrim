@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 #include "forms/ui_mainwindow.h"
 #include "../core/videotrimmer.h"
+#include "widgets/videoplayer.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_Ui(new Ui::MainWindow)
@@ -14,16 +15,22 @@ MainWindow::MainWindow(QWidget *parent)
     m_Ui->setupUi(this);
     toggleTrimWidgets();
 
+    connect(m_Ui->actionPlayOrPause, &QAction::triggered, m_Ui->mediaWidget, &VideoPlayer::playOrPausePlayer);
+    connect(m_Ui->actionNext_Frame, &QAction::triggered, m_Ui->mediaWidget, &VideoPlayer::movePlayerOneFrameForward);
+    connect(m_Ui->actionPrevious_Frame, &QAction::triggered, m_Ui->mediaWidget, &VideoPlayer::movePlayerOneFrameBackward);
+    connect(m_Ui->actionSeekForward, &QAction::triggered, this, [this]()
+            { m_Ui->mediaWidget->seekPlayer(5000); });
+    connect(m_Ui->actionSeekBackward, &QAction::triggered, this, [this]()
+            { m_Ui->mediaWidget->seekPlayer(-5000); });
     connect(m_Ui->importMediaButton, &QPushButton::clicked, this, &MainWindow::importMedia);
     connect(m_Ui->setStartTimeButton, &QPushButton::clicked, this, &MainWindow::setStartTimestamp);
     connect(m_Ui->setEndTimeButton, &QPushButton::clicked, this, &MainWindow::setEndTimestamp);
     connect(m_Ui->trimButton, &QPushButton::clicked, this, &MainWindow::saveTrimmedVideo);
     connect(m_Ui->mediaWidget->getPlayer(), &QMediaPlayer::durationChanged, this, [this](qint64 duration)
-		{
+            {
             m_Ui->endTimeLabel->setText(m_Ui->mediaWidget->toTimestampFormat(duration));
             m_EndTimestamp = duration; 
-            calculateTrimLength();
-		});
+            calculateTrimLength(); });
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +49,7 @@ void MainWindow::importMedia()
 
     toggleTrimWidgets();
     resetTimestamps();
+    updateWindowTitle();
 
     m_Ui->mediaWidget->setMedia(QUrl::fromLocalFile(filePath));
 }
@@ -95,7 +103,9 @@ void MainWindow::saveTrimmedVideo()
 
 void MainWindow::toggleTrimWidgets()
 {
-    m_Ui->timestampOptionsFrame->setDisabled(m_ImportedFilePath.isEmpty());
+    bool disable = m_ImportedFilePath.isEmpty();
+    m_Ui->timestampOptionsFrame->setDisabled(disable);
+    m_Ui->menuPlayback->setDisabled(disable);
 }
 
 void MainWindow::resetTimestamps()
@@ -121,4 +131,11 @@ void MainWindow::calculateTrimLength()
 
     QString lenTimestamp = m_Ui->mediaWidget->toTimestampFormat(m_EndTimestamp - m_StartTimestamp);
     m_Ui->trimButton->setText(defaultText + " (" + lenTimestamp + ")");
+}
+
+void MainWindow::updateWindowTitle()
+{
+    static QString appName = windowTitle();
+
+    setWindowTitle(appName + " - " + m_ImportedFilePath);
 }
