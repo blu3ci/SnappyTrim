@@ -3,11 +3,13 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QMediaPlayer>
+#include <QMediaMetaData>
 
 #include "mainwindow.h"
 #include "forms/ui_mainwindow.h"
 #include "../core/videotrimmer.h"
 #include "widgets/videoplayer.h"
+#include "widgets/importmediabutton.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), m_Ui(new Ui::MainWindow)
@@ -23,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_Ui->actionSeekBackward, &QAction::triggered, this, [this]()
             { m_Ui->mediaWidget->seekPlayer(-5000); });
     connect(m_Ui->importMediaButton, &QPushButton::clicked, this, &MainWindow::importMedia);
+    connect(m_Ui->importMediaButton, &ImportMediaButton::fileDropped, this, &MainWindow::importMediaFromPath);
     connect(m_Ui->setStartTimeButton, &QPushButton::clicked, this, &MainWindow::setStartTimestamp);
     connect(m_Ui->setEndTimeButton, &QPushButton::clicked, this, &MainWindow::setEndTimestamp);
     connect(m_Ui->trimButton, &QPushButton::clicked, this, &MainWindow::saveTrimmedVideo);
@@ -40,18 +43,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::importMedia()
 {
-    QString filePath = QFileDialog::getOpenFileName(this, "Open file", QString(), m_FileFilter);
+    QString filePath = QFileDialog::getOpenFileName(this, "Open file", QString(), "Media Files (" + m_FileFilter + ")");
 
     if (filePath.isEmpty())
         return;
 
-    m_ImportedFilePath = filePath;
+    importMediaFromPath(QUrl::fromLocalFile(filePath));
+}
+
+void MainWindow::importMediaFromPath(const QUrl &source)
+{
+    if (!QDir::match(m_FileFilter, source.fileName()))
+    {
+        QMessageBox::warning(this, "Error", "Invalid Media File: " + source.fileName());
+        return;
+    }
+
+    m_ImportedFilePath = source.toLocalFile();
+
+    m_Ui->mediaWidget->setMedia(source);
 
     toggleTrimWidgets();
     resetTimestamps();
     updateWindowTitle();
-
-    m_Ui->mediaWidget->setMedia(QUrl::fromLocalFile(filePath));
 }
 
 void MainWindow::setStartTimestamp()
@@ -88,7 +102,7 @@ void MainWindow::setEndTimestamp()
 
 void MainWindow::saveTrimmedVideo()
 {
-    QString filePath = QFileDialog::getSaveFileName(this, "Save File", QString(), m_FileFilter);
+    QString filePath = QFileDialog::getSaveFileName(this, "Save File", QString(), "Media Files (" + m_FileFilter + ")");
 
     if (filePath.isEmpty())
         return;

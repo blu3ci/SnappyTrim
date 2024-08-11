@@ -1,4 +1,3 @@
-#include "videoplayer.h"
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QTime>

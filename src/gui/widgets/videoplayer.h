@@ -17,8 +17,8 @@ public:
     VideoPlayer(QWidget *parent = nullptr);
 
     static QString toTimestampFormat(qint64 timeMs);
-
     void setMedia(const QUrl &source);
+
     const QMediaPlayer *getPlayer() const;
 
 public slots:

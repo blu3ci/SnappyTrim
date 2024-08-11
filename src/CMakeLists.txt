@@ -9,6 +9,8 @@ set(SOURCE_FILES
     gui/forms/mainwindow.ui
     gui/widgets/videoplayer.cpp
     gui/widgets/videoplayer.h
+    gui/widgets/importmediabutton.cpp
+    gui/widgets/importmediabutton.h
 )
 
 add_library(${LIBRARY_TARGET} STATIC ${SOURCE_FILES})

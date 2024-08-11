@@ -19,6 +19,7 @@ public:
 
 private slots:
     void importMedia();
+    void importMediaFromPath(const QUrl &source);
     void setStartTimestamp();
     void setEndTimestamp();
     void saveTrimmedVideo();
@@ -28,7 +29,7 @@ private:
     QString m_ImportedFilePath;
     qint64 m_StartTimestamp = -1;
     qint64 m_EndTimestamp = -1;
-    QString m_FileFilter = "Media Files (*.mp4 *.mov *.webm)";
+    QString m_FileFilter = "*.mp4 *.mov *.webm";
 
     void toggleTrimWidgets();
     void resetTimestamps();
