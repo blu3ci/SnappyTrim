@@ -41,8 +41,9 @@ void VideoProgressBar::paintEvent(QPaintEvent* event)
 	QPainter painter(this);
 	painter.setBrush(Qt::green);
 	painter.setPen(Qt::black);
+	painter.setRenderHint(QPainter::Antialiasing, true);
 
-	QSizeF markerSize(10, 10);
+	QSizeF markerSize(12, 12);
 	qreal sliderMaxXValue = m_VideoProgressBar->width() - markerSize.height();
 
 	qreal marker1Percentage = static_cast<qreal>(m_Marker1Ms) / m_MediaPlayer->duration();
