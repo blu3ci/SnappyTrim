@@ -10,7 +10,6 @@ class VideoProgressBar : public QWidget
 	Q_OBJECT
 
 public:
-
 	VideoProgressBar(Qt::Orientation orientation, QMediaPlayer* mediaPlayer, QWidget* parent = nullptr);
 
 	void paintMarkers(qint64 marker1Ms, qint64 marker2Ms);
@@ -31,4 +30,6 @@ private:
 	QLabel* m_ProgressLabel;
 	qint64 m_Marker1Ms = 0;
 	qint64 m_Marker2Ms = 0;
+
+	void drawTriangle(QPainter* painter, const QPointF& topLeft, const QSizeF& size, bool flip = false);
 };

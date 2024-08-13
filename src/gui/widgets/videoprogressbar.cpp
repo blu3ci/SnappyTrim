@@ -39,7 +39,8 @@ void VideoProgressBar::paintMarkers(qint64 marker1Ms, qint64 marker2Ms)
 void VideoProgressBar::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
-	painter.setBrush(QBrush(Qt::green));
+	painter.setBrush(Qt::green);
+	painter.setPen(Qt::black);
 
 	QSizeF markerSize(10, 10);
 	qreal sliderMaxXValue = m_VideoProgressBar->width() - markerSize.height();
@@ -50,11 +51,8 @@ void VideoProgressBar::paintEvent(QPaintEvent* event)
 	QPointF marker1Pos(sliderMaxXValue * marker1Percentage + markerSize.height() * (1.0 - marker1Percentage), 0);
 	QPointF marker2Pos(sliderMaxXValue * marker2Percentage + markerSize.height() * (1.0 - marker2Percentage), 0);
 
-	QRectF marker1(marker1Pos, markerSize);
-	QRectF marker2(marker2Pos, markerSize);
-
-	painter.drawEllipse(marker1);
-	painter.drawEllipse(marker2);
+	drawTriangle(&painter, marker1Pos, markerSize);
+	drawTriangle(&painter, marker2Pos, markerSize, true);
 }
 
 void VideoProgressBar::setPlayerPosition()
@@ -80,4 +78,22 @@ void VideoProgressBar::setProgressBarPosition(qint64 position)
 
 	m_ProgressLabel->setText(VideoPlayer::toTimestampFormat(position) +
 		" / " + VideoPlayer::toTimestampFormat(m_MediaPlayer->duration()));
+}
+
+void VideoProgressBar::drawTriangle(QPainter* painter, const QPointF& topLeft, const QSizeF& size, bool flip)
+{
+	QPointF points[3] = {
+		QPointF(topLeft),
+		QPointF(topLeft + QPointF(0, size.height())),
+		QPointF(topLeft + QPointF(size.width(), (topLeft.y() + size.height()) / 2))
+	};
+
+	if (flip)
+	{
+		points[0] += QPointF(size.width(), 0);
+		points[1] += QPointF(size.width(), 0);
+		points[2] += QPointF(-size.width(), 0);
+	}
+
+	painter->drawPolygon(points, 3);
 }
