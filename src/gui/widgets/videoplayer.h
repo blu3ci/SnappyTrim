@@ -6,45 +6,40 @@
 #include <QAudioOutput>
 #include <QVBoxLayout>
 #include <QFrame>
-#include <QSlider>
 #include <QLabel>
+
+#include "videoprogressbar.h"
 
 class VideoPlayer : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    VideoPlayer(QWidget *parent = nullptr);
+	VideoProgressBar* videoProgressBar;
 
-    static QString toTimestampFormat(qint64 timeMs);
-    void setMedia(const QUrl &source);
+	VideoPlayer(QWidget* parent = nullptr);
 
-    const QMediaPlayer *getPlayer() const;
+	static QString toTimestampFormat(qint64 timeMs);
+	void setMedia(const QUrl& source);
+
+	const QMediaPlayer* getPlayer() const;
 
 public slots:
-    void pausePlayer();
-    void resumePlayer();
-    void playOrPausePlayer();
-    void seekPlayer(qint64 position);
-    void movePlayerOneFrameForward();
-    void movePlayerOneFrameBackward();
-
-private slots:
-    void setProgressBarDuration(qint64 duration);
-    void setProgressBarPosition(qint64 position);
-    void setPlayerPosition();
+	void pausePlayer();
+	void resumePlayer();
+	void playOrPausePlayer();
+	void seekPlayer(qint64 position);
+	void movePlayerOneFrameForward();
+	void movePlayerOneFrameBackward();
 
 private:
-    bool m_SystemPaused = false;
-    QVBoxLayout *m_Layout;
-    QVideoWidget *m_VideoWidget;
-    QMediaPlayer *m_MediaPlayer;
-    QAudioOutput *m_AudioOutput;
-    QFrame *m_ControlsFrame;
-    QString m_Source;
-    QSlider *m_VideoProgressBar;
-    QLabel *m_ProgressLabel;
+	QVBoxLayout* m_Layout;
+	QVideoWidget* m_VideoWidget;
+	QMediaPlayer* m_MediaPlayer;
+	QAudioOutput* m_AudioOutput;
+	QFrame* m_ControlsFrame;
+	QString m_Source;
 
-    void configureMediaControls();
-    void toggleControlsFrame();
+	void configureMediaControls();
+	void toggleControlsFrame();
 };

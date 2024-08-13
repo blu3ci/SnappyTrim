@@ -2,41 +2,41 @@
 
 #include "importmediabutton.h"
 
-ImportMediaButton::ImportMediaButton(QWidget *parent)
-    : QPushButton(parent)
+ImportMediaButton::ImportMediaButton(QWidget* parent)
+	: QPushButton(parent)
 {
-    setAcceptDrops(true);
+	setAcceptDrops(true);
 }
 
-void ImportMediaButton::dragEnterEvent(QDragEnterEvent *event)
+void ImportMediaButton::dragEnterEvent(QDragEnterEvent* event)
 {
-    setText("<Drop Media File>");
-    event->acceptProposedAction();
+	setText("<Drop Media File>");
+	event->acceptProposedAction();
 }
 
-void ImportMediaButton::dragLeaveEvent(QDragLeaveEvent *event)
+void ImportMediaButton::dragLeaveEvent(QDragLeaveEvent* event)
 {
-    resetButton();
-    event->accept();
+	resetButton();
+	event->accept();
 }
 
-void ImportMediaButton::dropEvent(QDropEvent *event)
+void ImportMediaButton::dropEvent(QDropEvent* event)
 {
-    if (event->mimeData()->hasUrls())
-    {
-        QUrl filePath = event->mimeData()->urls()[0];
+	if (event->mimeData()->hasUrls())
+	{
+		QUrl filePath = event->mimeData()->urls()[0];
 
-        if (filePath.isLocalFile())
-        {
-            emit fileDropped(filePath);
-        }
-    }
+		if (filePath.isLocalFile())
+		{
+			emit fileDropped(filePath);
+		}
+	}
 
-    resetButton();
-    event->acceptProposedAction();
+	resetButton();
+	event->acceptProposedAction();
 }
 
 void ImportMediaButton::resetButton()
 {
-    setText("Import Media");
+	setText("Import Media");
 }

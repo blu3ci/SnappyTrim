@@ -11,6 +11,8 @@ set(SOURCE_FILES
     gui/widgets/videoplayer.h
     gui/widgets/importmediabutton.cpp
     gui/widgets/importmediabutton.h
+    gui/widgets/videoprogressbar.cpp
+    gui/widgets/videoprogressbar.h
 )
 
 add_library(${LIBRARY_TARGET} STATIC ${SOURCE_FILES})

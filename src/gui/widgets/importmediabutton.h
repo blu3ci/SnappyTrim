@@ -8,17 +8,17 @@
 
 class ImportMediaButton : public QPushButton
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    ImportMediaButton(QWidget *parent = nullptr);
+	ImportMediaButton(QWidget* parent = nullptr);
 
 signals:
-    void fileDropped(const QUrl &source);
+	void fileDropped(const QUrl& source);
 
 private:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void dragLeaveEvent(QDragLeaveEvent *event) override;
-    void dropEvent(QDropEvent *event) override;
-    void resetButton();
+	void dragEnterEvent(QDragEnterEvent* event) override;
+	void dragLeaveEvent(QDragLeaveEvent* event) override;
+	void dropEvent(QDropEvent* event) override;
+	void resetButton();
 };
