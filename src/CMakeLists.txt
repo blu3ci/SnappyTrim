@@ -15,7 +15,7 @@ set(SOURCE_FILES
     gui/widgets/videoprogressbar.h
 )
 
-add_library(${LIBRARY_TARGET} STATIC ${SOURCE_FILES})
+add_library(${LIBRARY_TARGET} OBJECT ${SOURCE_FILES})
 
 target_include_directories(${LIBRARY_TARGET} PRIVATE gui/widgets)
 
@@ -35,9 +35,15 @@ add_executable(${PROJECT_NAME}
     main.cpp
 )
 
-target_link_libraries(${PROJECT_NAME} ${LIBRARY_TARGET})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBRARY_TARGET})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     WIN32_EXECUTABLE ON 
     MACOSX_BUNDLE ON
 )
+
+install(TARGETS ${LIBRARY_TARGET}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/static
+    )

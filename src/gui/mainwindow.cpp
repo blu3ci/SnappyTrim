@@ -10,7 +10,7 @@
 #include "widgets/videoplayer.h"
 #include "widgets/importmediabutton.h"
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent), m_Ui(new Ui::MainWindow)
 {
 	m_Ui->setupUi(this);
@@ -20,16 +20,16 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(m_Ui->actionNext_Frame, &QAction::triggered, m_Ui->mediaWidget, &VideoPlayer::movePlayerOneFrameForward);
 	connect(m_Ui->actionPrevious_Frame, &QAction::triggered, m_Ui->mediaWidget, &VideoPlayer::movePlayerOneFrameBackward);
 	connect(m_Ui->actionSeekForward, &QAction::triggered, this, [this]()
-		{ m_Ui->mediaWidget->seekPlayer(5000); });
+			{ m_Ui->mediaWidget->seekPlayer(5000); });
 	connect(m_Ui->actionSeekBackward, &QAction::triggered, this, [this]()
-		{ m_Ui->mediaWidget->seekPlayer(-5000); });
+			{ m_Ui->mediaWidget->seekPlayer(-5000); });
 	connect(m_Ui->importMediaButton, &QPushButton::clicked, this, &MainWindow::importMedia);
 	connect(m_Ui->importMediaButton, &ImportMediaButton::fileDropped, this, &MainWindow::importMediaFromPath);
 	connect(m_Ui->setStartTimeButton, &QPushButton::clicked, this, &MainWindow::setStartTimestamp);
 	connect(m_Ui->setEndTimeButton, &QPushButton::clicked, this, &MainWindow::setEndTimestamp);
 	connect(m_Ui->trimButton, &QPushButton::clicked, this, &MainWindow::saveTrimmedVideo);
 	connect(m_Ui->mediaWidget->getPlayer(), &QMediaPlayer::durationChanged, this, [this](qint64 duration)
-		{
+			{
 			m_Ui->endTimeLabel->setText(m_Ui->mediaWidget->toTimestampFormat(duration));
 			m_EndTimestamp = duration;
 			calculateTrimLength(); });
@@ -50,7 +50,7 @@ void MainWindow::importMedia()
 	importMediaFromPath(QUrl::fromLocalFile(filePath));
 }
 
-void MainWindow::importMediaFromPath(const QUrl& source)
+void MainWindow::importMediaFromPath(const QUrl &source)
 {
 	if (!QDir::match(m_FileFilter, source.fileName()))
 	{
@@ -116,9 +116,9 @@ void MainWindow::saveTrimmedVideo()
 
 void MainWindow::toggleTrimWidgets()
 {
-	bool disable = m_ImportedFilePath.isEmpty();
-	m_Ui->timestampOptionsFrame->setDisabled(disable);
-	m_Ui->menuPlayback->setDisabled(disable);
+	bool isDisabled = m_ImportedFilePath.isEmpty();
+	m_Ui->timestampOptionsFrame->setDisabled(isDisabled);
+	m_Ui->menuPlayback->setDisabled(isDisabled);
 }
 
 void MainWindow::resetTimestamps()

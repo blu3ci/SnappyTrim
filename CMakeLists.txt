@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(snappytrim VERSION 0.1.0 LANGUAGES CXX C DESCRIPTION "Quick and lightweight video trimming application")
+project(SnappyTrim VERSION 0.1.0 LANGUAGES CXX C DESCRIPTION "Quick and lightweight video trimming application")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_PREFIX_PATH "${QT_INSTALL_DIR}")
@@ -35,3 +35,21 @@ endif()
 qt_standard_project_setup()
 
 add_subdirectory(src)
+
+install (TARGETS ${PROJECT_NAME}
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+qt_generate_deploy_app_script(TARGET ${PROJECT_NAME}
+    OUTPUT_SCRIPT deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+
+install(SCRIPT ${deploy_script})
+
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VENDOR "blu3ci")
+# set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME} ${PROJECT_VERSION}")
+
+include(CPack)
