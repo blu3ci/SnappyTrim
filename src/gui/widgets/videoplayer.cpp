@@ -1,4 +1,4 @@
-#include <QPushButton>
+#include <QToolButton>
 #include <QHBoxLayout>
 #include <QTime>
 #include <QLabel>
@@ -6,10 +6,10 @@
 
 #include "videoplayer.h"
 
-VideoPlayer::VideoPlayer(QWidget* parent)
+VideoPlayer::VideoPlayer(QWidget *parent)
 	: QWidget(parent), m_Layout(new QVBoxLayout(this)),
-	m_VideoWidget(new QVideoWidget), m_MediaPlayer(new QMediaPlayer),
-	m_AudioOutput(new QAudioOutput), m_ControlsFrame(new QFrame)
+	  m_VideoWidget(new QVideoWidget), m_MediaPlayer(new QMediaPlayer),
+	  m_AudioOutput(new QAudioOutput), m_ControlsFrame(new QFrame)
 {
 	m_Layout->addWidget(m_VideoWidget);
 	setLayout(m_Layout);
@@ -39,7 +39,7 @@ QString VideoPlayer::toTimestampFormat(qint64 timeMs)
 	return time.toString(format);
 }
 
-void VideoPlayer::setMedia(const QUrl& source)
+void VideoPlayer::setMedia(const QUrl &source)
 {
 	if (m_MediaPlayer->isPlaying())
 		m_MediaPlayer->stop();
@@ -52,7 +52,7 @@ void VideoPlayer::setMedia(const QUrl& source)
 	toggleControlsFrame();
 }
 
-const QMediaPlayer* VideoPlayer::getPlayer() const
+const QMediaPlayer *VideoPlayer::getPlayer() const
 {
 	return m_MediaPlayer;
 }
@@ -113,8 +113,8 @@ void VideoPlayer::configureMediaControls()
 
 	m_ControlsFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	QVBoxLayout* mediaControls = new QVBoxLayout;
-	QHBoxLayout* buttonLayout = new QHBoxLayout;
+	QVBoxLayout *mediaControls = new QVBoxLayout;
+	QHBoxLayout *buttonLayout = new QHBoxLayout;
 
 	m_ControlsFrame->setLayout(mediaControls);
 
@@ -124,14 +124,21 @@ void VideoPlayer::configureMediaControls()
 
 	mediaControls->addLayout(buttonLayout);
 
-	QPushButton* playButton = new QPushButton("Play");
-	QPushButton* pauseButton = new QPushButton("Pause");
+	QToolButton *playButton = new QToolButton();
+	QToolButton *pauseButton = new QToolButton();
+
+	playButton->setIcon(QIcon(":/res/icons/playIcon"));
+	playButton->setIconSize({32, 32});
+
+	pauseButton->setIcon(QIcon(":/res/icons/pauseIcon"));
+	pauseButton->setIconSize({32, 32});
 
 	buttonLayout->addWidget(playButton);
 	buttonLayout->addWidget(pauseButton);
+	buttonLayout->setAlignment(Qt::AlignLeft);
 
-	connect(playButton, &QPushButton::clicked, this, &VideoPlayer::resumePlayer);
-	connect(pauseButton, &QPushButton::clicked, this, &VideoPlayer::pausePlayer);
+	connect(playButton, &QToolButton::clicked, this, &VideoPlayer::resumePlayer);
+	connect(pauseButton, &QToolButton::clicked, this, &VideoPlayer::pausePlayer);
 }
 
 void VideoPlayer::toggleControlsFrame()

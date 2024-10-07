@@ -13,6 +13,8 @@ set(SOURCE_FILES
     gui/widgets/importmediabutton.h
     gui/widgets/videoprogressbar.cpp
     gui/widgets/videoprogressbar.h
+
+    gui/resources/snappytrim.qrc
 )
 
 add_library(${LIBRARY_TARGET} STATIC ${SOURCE_FILES})
