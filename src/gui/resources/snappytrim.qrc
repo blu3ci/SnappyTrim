@@ -3,5 +3,7 @@
     <file>icons/pauseIcon.png</file>
     <file>icons/playIcon.png</file>
     <file>icons/uploadIcon.png</file>
+    <file>icons/volumeIcon.png</file>
+    <file>icons/muteIcon.png</file>
   </qresource>
 </RCC>

@@ -1,4 +1,3 @@
-#include <QToolButton>
 #include <QHBoxLayout>
 #include <QTime>
 #include <QLabel>
@@ -107,25 +106,53 @@ void VideoPlayer::movePlayerOneFrameBackward()
 		seekPlayer(-m_MediaPlayer->metaData()[QMediaMetaData::VideoFrameRate].toInt());
 }
 
+void VideoPlayer::updateVolume(int value)
+{
+	m_AudioOutput->setVolume(value / 100.0);
+	m_VolumeSlider->setValue(value);
+}
+
+void VideoPlayer::muteUnmute()
+{
+	static int prevVolume = 100;
+
+	if (m_AudioOutput->volume() == 0)
+	{
+		m_MuteUnmuteButton->setIcon(QIcon(":/res/icons/volumeIcon.png"));
+		updateVolume(prevVolume);
+	}
+	else
+	{
+		prevVolume = m_AudioOutput->volume() * 100;
+		m_MuteUnmuteButton->setIcon(QIcon(":/res/icons/muteIcon.png"));
+		updateVolume(0);
+	}
+}
+
 void VideoPlayer::configureMediaControls()
 {
 	m_Layout->addWidget(m_ControlsFrame);
 
 	m_ControlsFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	QVBoxLayout *mediaControls = new QVBoxLayout;
+	QVBoxLayout *mediaLayout = new QVBoxLayout;
+	QHBoxLayout *mediaControlsLayout = new QHBoxLayout;
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
+	QHBoxLayout *volumeSliderLayout = new QHBoxLayout;
 
-	m_ControlsFrame->setLayout(mediaControls);
+	m_ControlsFrame->setLayout(mediaLayout);
 
 	videoProgressBar = new VideoProgressBar(Qt::Horizontal, m_MediaPlayer);
 
-	mediaControls->addWidget(videoProgressBar);
+	mediaLayout->addWidget(videoProgressBar);
 
-	mediaControls->addLayout(buttonLayout);
+	mediaLayout->addLayout(mediaControlsLayout);
 
-	QToolButton *playButton = new QToolButton();
-	QToolButton *pauseButton = new QToolButton();
+	mediaControlsLayout->addLayout(buttonLayout);
+	mediaControlsLayout->addLayout(volumeSliderLayout);
+
+	QToolButton *playButton = new QToolButton;
+	QToolButton *pauseButton = new QToolButton;
 
 	playButton->setIcon(QIcon(":/res/icons/playIcon"));
 	playButton->setIconSize({32, 32});
@@ -137,8 +164,24 @@ void VideoPlayer::configureMediaControls()
 	buttonLayout->addWidget(pauseButton);
 	buttonLayout->setAlignment(Qt::AlignLeft);
 
+	m_MuteUnmuteButton = new QToolButton;
+	m_MuteUnmuteButton->setIcon(QIcon(":/res/icons/volumeIcon.png"));
+	m_MuteUnmuteButton->setIconSize({32, 32});
+
+	m_VolumeSlider = new QSlider(Qt::Horizontal);
+	m_VolumeSlider->setSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Preferred);
+	m_VolumeSlider->setFixedWidth(150);
+	m_VolumeSlider->setMinimum(0);
+	m_VolumeSlider->setMaximum(100);
+	m_VolumeSlider->setValue(m_AudioOutput->volume() * 100);
+
+	volumeSliderLayout->addWidget(m_MuteUnmuteButton);
+	volumeSliderLayout->addWidget(m_VolumeSlider);
+
 	connect(playButton, &QToolButton::clicked, this, &VideoPlayer::resumePlayer);
 	connect(pauseButton, &QToolButton::clicked, this, &VideoPlayer::pausePlayer);
+	connect(m_VolumeSlider, &QSlider::valueChanged, this, &VideoPlayer::updateVolume);
+	connect(m_MuteUnmuteButton, &QToolButton::clicked, this, &VideoPlayer::muteUnmute);
 }
 
 void VideoPlayer::toggleControlsFrame()
